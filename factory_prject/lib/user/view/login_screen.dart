@@ -5,10 +5,19 @@ import 'package:dio/dio.dart';
 import 'package:factory_prject/comman/component/custom_text_form_field.dart';
 import 'package:factory_prject/comman/const/colors.dart';
 import 'package:factory_prject/comman/layout/default_layout.dart';
+import 'package:factory_prject/comman/view/root_tab.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +51,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomTextFormField(
                   hintText: '이메일을 입력해 주세요',
-                  onChnaged: (String value) {},
+                  onChnaged: (String value) {
+                    username = value;
+                  },
                 ),
                 SizedBox(
                   height: 16.0,
@@ -50,7 +61,9 @@ class LoginScreen extends StatelessWidget {
                 CustomTextFormField(
                   hintText: '비밀번호를 입력해 주세요',
                   obscureText: true,
-                  onChnaged: (String value) {},
+                  onChnaged: (String value) {
+                    password = value;
+                  },
                 ),
                 const SizedBox(
                   height: 16.0,
@@ -58,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () async {
                     //ID:비밀번호
-                    final rawString = 'test@codefactory.ai:testtest';
+                    final rawString = '$username:$password';
 
                     Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
@@ -73,6 +86,11 @@ class LoginScreen extends StatelessWidget {
                       ),
                     );
 
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RootTab(),
+                      ),
+                    );
                     print(resp.data);
                   },
                   style: ElevatedButton.styleFrom(
